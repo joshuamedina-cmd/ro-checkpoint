@@ -20,7 +20,7 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>RO Checkpoint</title>
+<title>RO System — Storage Log</title>
 
 <style>
 /* ===========================
@@ -72,7 +72,6 @@ body {
     position: relative;
 }
 
-/* Subtle background pattern layer */
 body::before {
     content: '';
     position: fixed;
@@ -99,40 +98,32 @@ table { border-collapse: collapse; width: 100%; }
    LAYOUT
    =========================== */
 .app-container {
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 16px;
-    padding-bottom: 48px;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px 16px 32px;
     position: relative;
     z-index: 1;
 }
 
-@media (min-width: 768px) {
-    .app-container { padding: 32px; padding-bottom: 64px; }
-}
-
 /* ===========================
-   HEADER BLOCK (login screen top)
+   PAGE HEADER
    =========================== */
 .page-header {
     text-align: center;
-    margin-bottom: 24px;
-    padding: 0 8px;
+    margin-bottom: 16px;
 }
 
 .page-header h1 {
-    font-size: 28px;
+    font-size: 22px;
     font-weight: 800;
-    color: var(--accent-dark);
-    letter-spacing: -0.5px;
-    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+    color: var(--text);
 }
 
 .page-header p {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text-muted);
+    margin-top: 2px;
 }
 
 /* ===========================
@@ -140,245 +131,26 @@ table { border-collapse: collapse; width: 100%; }
    =========================== */
 .card {
     background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     border: 1px solid var(--border);
-    width: 100%;
-    max-width: 800px;
-    margin-bottom: 16px;
-    color: var(--text);
+    overflow: hidden;
+}
+
+.card-body {
+    padding: 20px 16px;
 }
 
 /* ===========================
-   SCREEN VISIBILITY
-   =========================== */
-.screen { display: none; width: 100%; max-width: 800px; }
-.screen.active {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    animation: fadeIn 300ms ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ===========================
-   LOGIN SCREEN
-   =========================== */
-.login-card {
-    padding: 32px;
-}
-
-.login-card .login-section {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    max-width: 300px;
-    margin: 0 auto;
-}
-
-.form-label {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-    text-align: center;
-}
-
-.form-input {
-    padding: 14px 16px;
-    border-radius: 12px;
-    border: 1.5px solid var(--border);
-    background: rgba(255,255,255,0.8);
-    font-size: 20px;
-    min-height: 56px;
-    color: var(--text);
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    font-weight: 600;
-    width: 100%;
-    transition: border-color 180ms ease, box-shadow 180ms ease;
-}
-
-.form-input::placeholder {
-    text-transform: none;
-    letter-spacing: normal;
-    font-weight: 400;
-    color: #9ab0c4;
-    font-size: 14px;
-}
-
-.form-input:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.15);
-    background: #fff;
-}
-
-.error-msg {
-    background: rgba(244, 67, 54, 0.08);
-    color: var(--red);
-    border: 1px solid rgba(244, 67, 54, 0.2);
-    border-radius: 8px;
-    padding: 10px 16px;
-    font-size: 13px;
-    font-weight: 600;
-    text-align: center;
-    display: none;
-    animation: shake 0.4s ease-out;
-}
-
-.error-msg.visible { display: block; }
-
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    20% { transform: translateX(-6px); }
-    40% { transform: translateX(6px); }
-    60% { transform: translateX(-4px); }
-    80% { transform: translateX(4px); }
-}
-
-/* ===========================
-   BUTTONS
-   =========================== */
-.btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-family: var(--font);
-    font-weight: 700;
-    border-radius: 12px;
-    padding: 12px 24px;
-    font-size: 16px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    user-select: none;
-    touch-action: manipulation;
-    transition: background 180ms ease, transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
-    border: none;
-    cursor: pointer;
-    white-space: nowrap;
-}
-
-.btn:active { transform: scale(0.97); }
-.btn:disabled { opacity: 0.5; pointer-events: none; }
-
-.btn-full {
-    width: 100%;
-    max-width: 400px;
-    min-height: 52px;
-    font-size: 16px;
-}
-
-.btn-big {
-    width: 100%;
-    min-height: 64px;
-    font-size: 17px;
-    line-height: 1.3;
-    white-space: normal;
-}
-
-.btn-green {
-    background: var(--green);
-    color: #fff;
-}
-.btn-green:hover { background: var(--green-dark); box-shadow: 0 4px 16px rgba(76,175,80,0.28); }
-
-.btn-red {
-    background: var(--red);
-    color: #fff;
-}
-.btn-red:hover { background: var(--red-dark); box-shadow: 0 4px 16px rgba(244,67,54,0.28); }
-
-.btn-orange {
-    background: var(--orange);
-    color: #fff;
-}
-.btn-orange:hover { background: var(--orange-dark); }
-
-.btn-accent {
-    background: var(--accent);
-    color: #fff;
-}
-.btn-accent:hover { background: var(--accent-dark); box-shadow: 0 4px 16px rgba(33,150,243,0.28); }
-
-.btn-ghost {
-    background: transparent;
-    color: var(--text-muted);
-    border: 1px solid var(--border);
-    padding: 8px 14px;
-    min-height: 36px;
-    font-size: 13px;
-    border-radius: 8px;
-    text-transform: none;
-    letter-spacing: 0;
-    font-weight: 600;
-}
-.btn-ghost:hover { background: rgba(0,0,0,0.05); color: var(--text); }
-
-.btn-refresh {
-    background: transparent;
-    color: var(--text-muted);
-    border: 1px solid var(--border);
-    padding: 8px 14px;
-    min-height: 34px;
-    font-size: 13px;
-    border-radius: 8px;
-    font-weight: 600;
-    letter-spacing: 0;
-    text-transform: none;
-    transition: background 150ms ease;
-}
-.btn-refresh:hover { background: rgba(33,150,243,0.07); color: var(--text); }
-
-/* ===========================
-   HEADER BAR (main screen card top)
+   HEADER BAR
    =========================== */
 .header-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 24px;
+    padding: 12px 16px;
     border-bottom: 1px solid var(--border);
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-/* Operator badge — blue pill */
-.operator-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(33,150,243,0.12);
-    border: 1px solid rgba(33,150,243,0.2);
-    border-radius: 999px;
-    padding: 6px 14px 6px 8px;
-}
-
-.operator-avatar {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--accent);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.operator-name {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--accent-dark);
+    background: rgba(33,150,243,0.03);
 }
 
 /* ===========================
@@ -386,247 +158,88 @@ table { border-collapse: collapse; width: 100%; }
    =========================== */
 .status-bar {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 800px;
+    justify-content: center;
     margin-bottom: 12px;
 }
 
 .status-pill {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     padding: 6px 14px;
     border-radius: 999px;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
-}
-
-.status-pill.idle {
-    background: rgba(0,0,0,0.06);
-    color: var(--text-muted);
-}
-
-.status-pill.running {
-    background: rgba(76,175,80,0.15);
-    color: var(--green-dark);
-}
-
-.status-pill.loading {
-    background: rgba(255,152,0,0.15);
-    color: var(--orange-dark);
-}
-
-.status-pill.error {
-    background: rgba(244,67,54,0.12);
-    color: var(--red-dark);
-}
-
-/* ===========================
-   CARD BODY
-   =========================== */
-.card-body {
-    padding: 24px;
-}
-
-@media (min-width: 768px) {
-    .card-body { padding: 32px; }
-}
-
-/* ===========================
-   QUEUE LIST
-   =========================== */
-.queue-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-}
-
-.queue-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text);
-}
-
-.queue-count {
-    font-size: 12px;
-    color: var(--text-muted);
-    font-weight: 600;
-    background: rgba(33,150,243,0.08);
-    padding: 3px 12px;
-    border-radius: 999px;
-}
-
-.queue-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.queue-item {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 16px;
-    border-radius: 12px;
-    border: 1.5px solid var(--border);
-    background: rgba(255,255,255,0.6);
     transition: all 0.3s ease;
 }
 
-.queue-item.running {
-    border-color: var(--green);
-    background: rgba(76, 175, 80, 0.08);
-    animation: pulse-border 2s infinite;
-}
-
-.queue-item.completed {
-    opacity: 0.5;
-    background: rgba(0,0,0,0.03);
-}
-
-.queue-item.completed .item-name {
-    text-decoration: line-through;
-    color: var(--text-muted);
-}
-
-@keyframes pulse-border {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.3); }
-    50%       { box-shadow: 0 0 0 6px rgba(76, 175, 80, 0); }
-}
-
-/* Numbered blue circle */
-.item-number {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--accent);
-    color: #fff;
-    font-size: 14px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.queue-item.running .item-number {
-    background: var(--green);
-}
-
-.item-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-}
-
-.item-name {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.item-meta {
-    font-size: 12px;
-    color: var(--text-muted);
-}
-
-.item-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--green-dark);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    white-space: nowrap;
-}
-
-.live-dot {
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    background: var(--green);
-    border-radius: 50%;
-    animation: blink 1s infinite;
-}
-
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.25; }
-}
+.status-pill.idle { background: rgba(76,175,80,0.1); color: var(--green-dark); }
+.status-pill.loading { background: rgba(33,150,243,0.1); color: var(--accent-dark); }
+.status-pill.error { background: rgba(244,67,54,0.1); color: var(--red-dark); }
 
 /* ===========================
-   SECTION TITLE
+   SECTION TITLE + DIVIDER
    =========================== */
 .section-title {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 700;
-    color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 12px;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 10px;
 }
 
 .divider {
     height: 1px;
     background: var(--border);
-    margin: 24px 0;
+    margin: 20px 0;
 }
 
 /* ===========================
-   TIMER CARD
+   QUEUE HEADER
    =========================== */
-.timer-card {
-    background: var(--text);
-    border-radius: 12px;
-    padding: 24px;
-    text-align: center;
-    margin-bottom: 16px;
-}
-
-.timer-label {
-    font-size: 11px;
-    color: #6a8aaa;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 4px;
+.queue-header {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 6px;
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
 
-.timer-value {
-    font-family: 'Courier New', monospace;
-    font-size: clamp(2.5rem, 8vw, 3rem);
+.queue-title {
+    font-size: 13px;
     font-weight: 700;
-    color: var(--green);
-    letter-spacing: 2px;
-    font-variant-numeric: tabular-nums;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
 }
 
-.timer-started {
+.queue-count {
     font-size: 12px;
-    color: #4a6a8a;
-    margin-top: 4px;
+    font-weight: 600;
+    color: var(--accent);
+    background: rgba(33,150,243,0.08);
+    padding: 3px 10px;
+    border-radius: 999px;
 }
 
-.timer-batch-name {
-    font-size: 18px;
-    font-weight: 700;
-    color: #d4e4f4;
-    margin-top: 10px;
+/* ===========================
+   REFRESH BUTTON
+   =========================== */
+.btn-refresh {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    background: rgba(33,150,243,0.08);
+    border: 1px solid rgba(33,150,243,0.15);
+    cursor: pointer;
+    transition: all 0.15s ease;
 }
+.btn-refresh:hover { background: rgba(33,150,243,0.15); }
 
 /* ===========================
    EMPTY STATE
@@ -699,175 +312,82 @@ table { border-collapse: collapse; width: 100%; }
     font-weight: 700;
 }
 
-.badge-moved {
-    background: rgba(76, 175, 80, 0.12);
-    color: var(--green-dark);
+.badge-stored {
+    background: rgba(33, 150, 243, 0.12);
+    color: var(--accent-dark);
 }
 
 /* ===========================
-   MODAL
+   LIVE DOT
    =========================== */
-.modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 20, 40, 0.45);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    padding: 16px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 250ms ease;
-}
-
-.modal-overlay.active {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.modal-content {
-    background: #fff;
-    border-radius: var(--radius);
-    box-shadow: 0 12px 48px rgba(0,0,0,0.18);
-    border: 1px solid var(--border);
-    width: 100%;
-    max-width: 480px;
-    color: var(--text);
-    transform: scale(0.96) translateY(8px);
-    transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.modal-overlay.active .modal-content {
-    transform: scale(1) translateY(0);
-}
-
-.modal-header {
-    padding: 28px 28px 20px;
-    text-align: center;
-}
-
-.modal-title {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--text);
-    margin-bottom: 8px;
-}
-
-.modal-subtitle {
-    font-size: 14px;
-    color: var(--text-muted);
-    line-height: 1.5;
-}
-
-.modal-body {
-    padding: 0 28px 28px;
-}
-
-.modal-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-/* ===========================
-   BATCH COUNTER (modal)
-   =========================== */
-.batch-counter {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 24px;
-    padding: 20px 0;
-}
-
-.counter-btn {
-    width: 48px;
-    height: 48px;
+.live-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    border: 2px solid var(--accent);
-    background: transparent;
-    color: var(--accent);
-    font-size: 26px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.18s;
+    background: var(--green);
+    margin-right: 6px;
+    animation: pulse 1.5s ease-in-out infinite;
 }
 
-.counter-btn:hover {
-    background: var(--accent);
-    color: #fff;
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
 }
 
-.counter-value {
-    font-size: clamp(2rem, 6vw, 2.5rem);
-    font-weight: 800;
-    color: var(--text);
-    min-width: 56px;
+/* ===========================
+   RUNNING INDICATOR
+   =========================== */
+.ro-running-card {
     text-align: center;
-}
-
-.counter-hint {
-    font-size: 14px;
-    color: var(--text-muted);
-    text-align: center;
+    padding: 20px 16px;
+    background: rgba(76, 175, 80, 0.06);
+    border-radius: 12px;
     margin-bottom: 16px;
 }
 
-/* Btn secondary for modal cancel */
-.btn-secondary {
-    background: rgba(0,0,0,0.05);
-    color: var(--text-muted);
-    border: 1px solid var(--border);
-    min-height: 48px;
+.ro-running-label {
     font-size: 15px;
-    border-radius: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
     font-weight: 700;
+    color: var(--green-dark);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 180ms ease;
+    gap: 4px;
 }
-.btn-secondary:hover { background: rgba(0,0,0,0.08); color: var(--text); }
+
+.ro-running-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
 
 /* ===========================
    TOAST
    =========================== */
-.toast-container {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 200;
-    width: calc(100% - 32px);
-    max-width: 400px;
-    pointer-events: none;
-}
-
 .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
     background: var(--text);
     color: #fff;
-    padding: 14px 22px;
+    padding: 12px 20px;
     border-radius: 12px;
-    font-weight: 600;
     font-size: 14px;
-    text-align: center;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    font-weight: 600;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    z-index: 9999;
     opacity: 0;
-    transform: translateY(16px);
-    transition: opacity 280ms ease, transform 280ms ease;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    max-width: 320px;
+    text-align: center;
 }
 
 .toast.visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
 }
 
 /* ===========================
@@ -875,154 +395,99 @@ table { border-collapse: collapse; width: 100%; }
    =========================== */
 .app-footer {
     text-align: center;
-    padding: 24px 16px 16px;
-    font-size: 12px;
-    color: var(--text-muted);
+    padding-top: 20px;
 }
 
 .app-footer a {
+    font-size: 11px;
     color: var(--text-muted);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    opacity: 0.7;
+    text-decoration: none;
+    opacity: 0.6;
+}
+.app-footer a:hover { opacity: 1; }
+
+/* ===========================
+   AUTO-REFRESH BAR
+   =========================== */
+.auto-refresh-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 8px 0;
 }
 
-.app-footer a:hover { opacity: 1; color: var(--accent); }
+.auto-refresh-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s ease-in-out infinite;
+}
 </style>
 </head>
 <body>
-
-<!-- Toast -->
-<div class="toast-container">
-  <div class="toast" id="toast"></div>
-</div>
+<div id="toast" class="toast"></div>
 
 <div class="app-container">
 
-  <!-- ===========================
-       SCREEN 1: LOGIN
-       =========================== -->
-  <div class="screen active" id="screen-login">
-
-    <div class="page-header">
-      <h1>RO Checkpoint</h1>
-      <p>Pre-RO System queue management</p>
-    </div>
-
-    <div class="card">
-      <div class="card-body">
-        <div class="login-section">
-          <label class="form-label" for="operator-code">Enter Your Operator Code</label>
-          <input
-            type="text"
-            id="operator-code"
-            class="form-input"
-            placeholder="0000"
-            maxlength="4"
-            autocomplete="off"
-            autocapitalize="characters"
-            spellcheck="false"
-          >
-          <div class="error-msg" id="login-error">Invalid operator code</div>
-          <button class="btn btn-accent btn-full" id="login-btn" type="button" style="align-self:center;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-            Login
-          </button>
-          <p style="font-size:12px;color:var(--text-muted);text-align:center;">Type your 4-character code — login is automatic</p>
-        </div>
-      </div>
-    </div>
-
-    <footer class="app-footer">
-      <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">Created with Perplexity Computer</a>
-    </footer>
-
+  <div class="page-header">
+    <h1>RO System — Storage Log</h1>
+    <p>Permanent log of all batches processed through the RO system</p>
   </div>
 
-  <!-- ===========================
-       SCREEN 2: MAIN APP
-       =========================== -->
-  <div class="screen" id="screen-main">
-
-    <!-- Page title (small, above card) -->
-    <div class="page-header" style="margin-bottom:8px;">
-      <h1>RO Checkpoint</h1>
-      <p>Pre-RO System queue management</p>
-    </div>
-
-    <!-- STATUS BAR -->
-    <div class="status-bar">
-      <div class="status-pill idle" id="statusChip">
-        <span>Ready</span>
-      </div>
-    </div>
-
-    <!-- MAIN CARD -->
-    <div class="card">
-      <!-- Header bar with operator badge + controls -->
-      <div class="header-bar">
-        <div class="operator-badge" id="operatorBadge">
-          <div class="operator-avatar" id="operator-initials"></div>
-          <span class="operator-name" id="operator-name-display"></span>
-          <button class="btn-ghost" id="logout-btn" aria-label="Logout" style="padding:4px 8px;font-size:12px;border:none;background:transparent;color:var(--text-muted);">×</button>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <button class="btn-refresh" onclick="loadBatches()">↻ Refresh</button>
-        </div>
-      </div>
-
-      <div class="card-body">
-
-        <!-- Queue -->
-        <div class="queue-header">
-          <span class="queue-title">Pre-RO System Queue</span>
-          <span class="queue-count" id="queueCount">0 batches</span>
-        </div>
-        <div id="queueContainer">
-          <div class="empty-state">
-            <span class="spinner" style="margin-right:8px;"></span>
-            Loading batches from Monday.com...
-          </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <!-- RO System Control -->
-        <div class="section-title">RO System Control</div>
-        <div id="controlContainer"></div>
-
-        <div class="divider"></div>
-
-        <!-- Session Log -->
-        <div class="section-title">Session Log</div>
-        <div id="logContainer">
-          <div class="empty-state" style="padding:16px;">No runs logged this session</div>
-        </div>
-
-      </div>
-    </div>
-
-    <footer class="app-footer">
-      <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">Created with Perplexity Computer</a>
-    </footer>
-
-  </div>
-
-</div>
-
-<!-- ===========================
-     MODAL: Tank Empty Question
-     =========================== -->
-<div class="modal-overlay" id="modal-tank">
-  <div class="modal-content">
-    <div class="modal-header">
-      <div class="modal-title" id="modalTitle">Is the RO System Complete?</div>
-      <div class="modal-subtitle" id="modalSubtitle">Has the entire RO system tank been fully processed?</div>
-    </div>
-    <div class="modal-body" id="modalBody">
-      <!-- Dynamic buttons -->
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <div class="status-pill idle" id="statusChip">
+      <span>Loading...</span>
     </div>
   </div>
+
+  <!-- MAIN CARD -->
+  <div class="card">
+    <div class="header-bar">
+      <div style="font-size:14px;font-weight:700;color:var(--text);">RO System</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="btn-refresh" onclick="loadBatches()">&#8634; Refresh</button>
+      </div>
+    </div>
+
+    <div class="card-body">
+
+      <!-- RO Running indicator -->
+      <div class="ro-running-card">
+        <div class="ro-running-label"><span class="live-dot"></span> RO System Running</div>
+        <div class="ro-running-hint">Continuously processing &mdash; batches stored here permanently</div>
+      </div>
+
+      <!-- Batch Count -->
+      <div class="queue-header">
+        <span class="queue-title">Stored Batches</span>
+        <span class="queue-count" id="batchCount">0 batches</span>
+      </div>
+
+      <!-- Batch Log Table -->
+      <div id="logContainer">
+        <div class="empty-state">
+          <span class="spinner" style="margin-right:8px;"></span>
+          Loading batches from Monday.com...
+        </div>
+      </div>
+
+      <div class="auto-refresh-bar">
+        <span class="auto-refresh-dot"></span>
+        Auto-refreshes every 30 seconds
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">Created with Perplexity Computer</a>
+  </footer>
+
 </div>
 
 <script>
@@ -1033,44 +498,8 @@ var MONDAY_API = 'https://api.monday.com/v2';
 var MONDAY_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjYyNzA3NzcxOSwiYWFpIjoxMSwidWlkIjo3NTA2NTY3OCwiaWFkIjoiMjAyNi0wMi0yOFQwMToxNzowOS4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MjkxNDg2NzMsInJnbiI6InVzZTEifQ.ocD9w0Q-17JqNfU4iZXL4i3frn_Bw4pyVe_fkhJuiPg';
 
 var BOARD_ID = '18402821844';
-var SOURCE_GROUP = 'group_mm16ennm';
-var DEST_GROUP = 'group_mm16wch5';
-
-var OPERATORS = {
-  '4821': 'Josh',
-  '0420': 'Q',
-  '1911': 'Jaime D',
-  '4093': 'George',
-  '5150': 'Bobby',
-  '2008': 'Jaime P',
-  '6239': 'Sly',
-  '4444': 'Zee',
-  '7582': 'Dylan S',
-  '9034': 'JDub',
-  '8818': 'Cris',
-  '5463': 'Arturo',
-  '3847': 'Eli',
-  '0419': 'Laker',
-  '1653': 'Dylan',
-  '7117': 'FernDawg',
-  '0001': 'KD',
-  '1234': 'Moh',
-  '2691': 'Quentin',
-  '8305': 'George T'
-};
-
-/* ===========================
-   STATE
-   =========================== */
-var state = {
-  currentOperator: null,
-  currentCode: null,
-  batches: [],
-  runningBatch: null,
-  runStartTime: null,
-  timerInterval: null,
-  sessionLogs: []
-};
+var RO_GROUP = 'group_mm16ennm';   // Pre-RO system group (permanent storage)
+var RO_ARRIVAL_COL = 'text_mm1db43'; // "RO Completed" column — arrival timestamp
 
 /* ===========================
    MONDAY API
@@ -1086,16 +515,19 @@ function mondayQuery(query) {
   }).then(function(r) { return r.json(); });
 }
 
+/* ===========================
+   LOAD & RENDER
+   =========================== */
 function loadBatches() {
   setStatus('loading', 'Loading...');
 
-  var query = '{ boards(ids: [' + BOARD_ID + ']) { items_page(limit: 100) { items { id name group { id title } column_values { id text value } } } } }';
+  var query = '{ boards(ids: [' + BOARD_ID + ']) { items_page(limit: 200) { items { id name group { id title } column_values { id text value } } } } }';
 
   mondayQuery(query).then(function(result) {
     var items = result.data.boards[0].items_page.items;
-    var sourceItems = items.filter(function(item) { return item.group.id === SOURCE_GROUP; });
+    var roItems = items.filter(function(item) { return item.group.id === RO_GROUP; });
 
-    state.batches = sourceItems.map(function(item, i) {
+    var batches = roItems.map(function(item) {
       var cols = {};
       item.column_values.forEach(function(cv) { cols[cv.id] = cv.text; });
       return {
@@ -1105,110 +537,61 @@ function loadBatches() {
         operator: cols['text_mm16pd4m'] || '',
         date: cols['date4'] || '',
         time: cols['text_mm1635'] || '',
-        position: i + 1
+        roArrival: cols[RO_ARRIVAL_COL] || ''
       };
     });
 
-    renderQueue();
-    renderControl();
-    setStatus('idle', state.batches.length + ' batch' + (state.batches.length !== 1 ? 'es' : '') + ' in queue');
-    document.getElementById('queueCount').textContent = state.batches.length + ' batch' + (state.batches.length !== 1 ? 'es' : '');
+    // Sort: newest arrivals first (by RO arrival timestamp, then date)
+    batches.sort(function(a, b) {
+      var aTime = a.roArrival ? new Date(a.roArrival).getTime() : 0;
+      var bTime = b.roArrival ? new Date(b.roArrival).getTime() : 0;
+      return bTime - aTime;
+    });
+
+    renderLog(batches);
+    var count = batches.length;
+    document.getElementById('batchCount').textContent = count + ' batch' + (count !== 1 ? 'es' : '');
+    setStatus('idle', count + ' batch' + (count !== 1 ? 'es' : '') + ' stored');
 
   }).catch(function(err) {
     console.error('Load error:', err);
-    setStatus('loading', 'Failed to load');
+    setStatus('error', 'Failed to load');
   });
 }
 
-function moveBatchToDest(batchId) {
-  var mutation = 'mutation { move_item_to_group(item_id: ' + batchId + ', group_id: "' + DEST_GROUP + '") { id } }';
-  return mondayQuery(mutation);
-}
-
-/* ===========================
-   RENDERING
-   =========================== */
-function renderQueue() {
-  var container = document.getElementById('queueContainer');
-
-  if (state.batches.length === 0) {
-    container.innerHTML = '<div class="empty-state">No batches in Pre-RO System queue</div>';
-    return;
-  }
-
-  var html = '<ul class="queue-list">';
-  state.batches.forEach(function(batch, i) {
-    var isRunning = state.runningBatch && state.runningBatch.id === batch.id;
-    var cls = isRunning ? 'queue-item running' : 'queue-item';
-
-    html += '<li class="' + cls + '">' +
-      '<div class="item-number">' + (i + 1) + '</div>' +
-      '<div class="item-info">' +
-        '<span class="item-name">' + escapeHtml(batch.batchName || batch.name) + '</span>' +
-        '<span class="item-meta">' +
-          (batch.operator ? batch.operator + ' &middot; ' : '') +
-          (batch.date || 'No date') +
-          (batch.time ? ' &middot; ' + batch.time : '') +
-        '</span>' +
-      '</div>' +
-      (isRunning ? '<span class="item-status"><span class="live-dot"></span> Running</span>' : '') +
-    '</li>';
-  });
-  html += '</ul>';
-  container.innerHTML = html;
-}
-
-function renderControl() {
-  var container = document.getElementById('controlContainer');
-
-  if (state.runningBatch) {
-    container.innerHTML =
-      '<div class="timer-card">' +
-        '<div class="timer-label"><span class="live-dot"></span> RO System Running</div>' +
-        '<div class="timer-value" id="timerValue">00:00:00</div>' +
-        '<div class="timer-started">Started: ' + formatDateTime(state.runStartTime) + '</div>' +
-        '<div class="timer-batch-name">' + escapeHtml(state.runningBatch.batchName || state.runningBatch.name) + '</div>' +
-      '</div>' +
-      '<button class="btn btn-red btn-big" onclick="stopProcess()">' +
-        '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>' +
-        'Stop RO System' +
-      '</button>';
-    startTimer();
-
-  } else if (state.batches.length > 0) {
-    var next = state.batches[0];
-    container.innerHTML =
-      '<div style="text-align:center;margin-bottom:16px;color:var(--text-muted);font-size:14px;">' +
-        'Next in queue: <strong style="color:var(--text);">' + escapeHtml(next.batchName || next.name) + '</strong>' +
-      '</div>' +
-      '<button class="btn btn-green btn-big" onclick="startProcess()">' +
-        '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>' +
-        'Start RO System' +
-      '</button>';
-  } else {
-    container.innerHTML = '<div class="empty-state" style="padding:16px;">No batches available to run</div>';
-  }
-}
-
-function renderLog() {
+function renderLog(batches) {
   var container = document.getElementById('logContainer');
 
-  if (state.sessionLogs.length === 0) {
-    container.innerHTML = '<div class="empty-state" style="padding:16px;">No runs logged this session</div>';
+  if (batches.length === 0) {
+    container.innerHTML = '<div class="empty-state">No batches in RO storage yet</div>';
     return;
   }
 
-  var html = '<div class="log-table-wrapper"><table class="log-table"><thead><tr>' +
-    '<th>Batch</th><th>Started</th><th>Stopped</th><th>Duration</th><th>Moved</th>' +
-    '</tr></thead><tbody>';
+  var html =
+    '<div class="log-table-wrapper">' +
+      '<table class="log-table">' +
+        '<thead><tr>' +
+          '<th>#</th><th>Batch</th><th>Operator</th><th>Arrived</th>' +
+        '</tr></thead>' +
+        '<tbody>';
 
-  state.sessionLogs.forEach(function(log) {
-    html += '<tr>' +
-      '<td><strong>' + escapeHtml(log.batchName) + '</strong></td>' +
-      '<td>' + formatTimeShort(log.startTime) + '</td>' +
-      '<td>' + formatTimeShort(log.stopTime) + '</td>' +
-      '<td>' + log.duration + '</td>' +
-      '<td>' + (log.moved ? '<span class="badge badge-moved">Basify and Flocc</span>' : '-') + '</td>' +
+  batches.forEach(function(batch, i) {
+    var arrivedStr = '';
+    if (batch.roArrival) {
+      var d = new Date(batch.roArrival);
+      arrivedStr = formatDateShort(d) + ' ' + formatTime12h(d);
+    } else if (batch.date) {
+      arrivedStr = batch.date + (batch.time ? ' ' + batch.time : '');
+    } else {
+      arrivedStr = '-';
+    }
+
+    html +=
+      '<tr>' +
+        '<td style="color:var(--text-muted);font-size:12px;">' + (i + 1) + '</td>' +
+        '<td><strong>' + escapeHtml(batch.batchName) + '</strong></td>' +
+        '<td>' + escapeHtml(batch.operator || '-') + '</td>' +
+        '<td><span class="badge badge-stored">' + escapeHtml(arrivedStr) + '</span></td>' +
       '</tr>';
   });
 
@@ -1217,240 +600,8 @@ function renderLog() {
 }
 
 /* ===========================
-   RO ACTIONS
-   =========================== */
-function startProcess() {
-  if (state.batches.length === 0 || state.runningBatch) return;
-
-  state.runningBatch = state.batches[0];
-  state.runStartTime = new Date();
-
-  renderQueue();
-  renderControl();
-  setStatus('running', 'Running: ' + (state.runningBatch.batchName || state.runningBatch.name));
-  showToast('RO System started: ' + (state.runningBatch.batchName || state.runningBatch.name));
-}
-
-function stopProcess() {
-  if (!state.runningBatch) return;
-
-  stopTimer();
-  var stopTime = new Date();
-  var duration = formatDuration(state.runStartTime, stopTime);
-
-  state.sessionLogs.push({
-    batchName: state.runningBatch.batchName || state.runningBatch.name,
-    batchId: state.runningBatch.id,
-    operator: state.currentOperator,
-    startTime: state.runStartTime,
-    stopTime: stopTime,
-    duration: duration,
-    moved: false
-  });
-
-  showTankEmptyModal();
-}
-
-function showTankEmptyModal() {
-  var titleEl = document.getElementById('modalTitle');
-  var subtitleEl = document.getElementById('modalSubtitle');
-  var bodyEl = document.getElementById('modalBody');
-
-  titleEl.textContent = 'Is the RO System Complete?';
-  subtitleEl.textContent = 'Has the entire RO system tank been fully processed?';
-
-  bodyEl.innerHTML =
-    '<div class="modal-buttons">' +
-      '<button class="btn btn-green" style="width:100%;min-height:52px;font-size:15px;" onclick="handleTankEmpty(true)">' +
-        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>' +
-        'Yes, Tank is Empty' +
-      '</button>' +
-      '<button class="btn btn-orange" style="width:100%;min-height:52px;font-size:15px;" onclick="handleTankEmpty(false)">' +
-        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>' +
-        'No, Tank Still Has Material' +
-      '</button>' +
-    '</div>';
-
-  document.getElementById('modal-tank').classList.add('active');
-}
-
-var selectedCount = 1;
-
-function handleTankEmpty(isEmpty) {
-  if (isEmpty) {
-    document.getElementById('modal-tank').classList.remove('active');
-    setStatus('loading', 'Moving all batches to Basify and Flocc...');
-
-    var promises = state.batches.map(function(b) { return moveBatchToDest(b.id); });
-
-    Promise.all(promises).then(function() {
-      var last = state.sessionLogs[state.sessionLogs.length - 1];
-      last.moved = true;
-      last.movedCount = state.batches.length;
-
-      showToast('All ' + state.batches.length + ' batch(es) moved to Basify and Flocc');
-
-      state.runningBatch = null;
-      state.runStartTime = null;
-      return loadBatches();
-    }).then(function() {
-      renderControl();
-      renderLog();
-    }).catch(function(err) {
-      console.error(err);
-      setStatus('loading', 'Error moving batches');
-    });
-
-  } else {
-    showBatchCountModal();
-  }
-}
-
-function showBatchCountModal() {
-  var titleEl = document.getElementById('modalTitle');
-  var subtitleEl = document.getElementById('modalSubtitle');
-  var bodyEl = document.getElementById('modalBody');
-
-  selectedCount = 1;
-  var max = state.batches.length;
-
-  titleEl.textContent = 'How Many Batches Processed?';
-  subtitleEl.textContent = 'Estimate how many batches went through the RO system. They will be moved to Basify and Flocc in order.';
-
-  function renderCounterUI() {
-    bodyEl.innerHTML =
-      '<div class="batch-counter">' +
-        '<button class="counter-btn" onclick="adjustCount(-1)">-</button>' +
-        '<span class="counter-value" id="countVal">' + selectedCount + '</span>' +
-        '<button class="counter-btn" onclick="adjustCount(1)">+</button>' +
-      '</div>' +
-      '<div class="counter-hint">Will move the first <strong>' + selectedCount + '</strong> of ' + max + ' batch' + (max !== 1 ? 'es' : '') + ' to Basify and Flocc</div>' +
-      '<div class="modal-buttons">' +
-        '<button class="btn btn-green" style="width:100%;min-height:52px;font-size:15px;" onclick="confirmBatchCount()">' +
-          '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>' +
-          'Confirm &amp; Move' +
-        '</button>' +
-        '<button class="btn-secondary" onclick="closeTankModal()">Cancel</button>' +
-      '</div>';
-  }
-
-  window.adjustCount = function(delta) {
-    selectedCount = Math.max(1, Math.min(max, selectedCount + delta));
-    document.getElementById('countVal').textContent = selectedCount;
-    bodyEl.querySelector('.counter-hint').innerHTML = 'Will move the first <strong>' + selectedCount + '</strong> of ' + max + ' batch' + (max !== 1 ? 'es' : '') + ' to Basify and Flocc';
-  };
-
-  renderCounterUI();
-}
-
-function confirmBatchCount() {
-  document.getElementById('modal-tank').classList.remove('active');
-  setStatus('loading', 'Moving ' + selectedCount + ' batch(es)...');
-
-  var toMove = state.batches.slice(0, selectedCount);
-  var promises = toMove.map(function(b) { return moveBatchToDest(b.id); });
-
-  Promise.all(promises).then(function() {
-    var last = state.sessionLogs[state.sessionLogs.length - 1];
-    last.moved = true;
-    last.movedCount = selectedCount;
-
-    showToast(selectedCount + ' batch(es) moved to Basify and Flocc');
-
-    state.runningBatch = null;
-    state.runStartTime = null;
-    return loadBatches();
-  }).then(function() {
-    renderControl();
-    renderLog();
-  }).catch(function(err) {
-    console.error(err);
-    setStatus('loading', 'Error moving batches');
-  });
-}
-
-function closeTankModal() {
-  document.getElementById('modal-tank').classList.remove('active');
-  state.runningBatch = null;
-  state.runStartTime = null;
-  renderQueue();
-  renderControl();
-  renderLog();
-  setStatus('idle', state.batches.length + ' batch' + (state.batches.length !== 1 ? 'es' : '') + ' in queue');
-}
-
-/* ===========================
-   TIMER
-   =========================== */
-function startTimer() {
-  if (state.timerInterval) clearInterval(state.timerInterval);
-  state.timerInterval = setInterval(updateTimer, 1000);
-  updateTimer();
-}
-
-function stopTimer() {
-  if (state.timerInterval) { clearInterval(state.timerInterval); state.timerInterval = null; }
-}
-
-function updateTimer() {
-  var el = document.getElementById('timerValue');
-  if (!el || !state.runStartTime) return;
-  var elapsed = Math.floor((Date.now() - state.runStartTime.getTime()) / 1000);
-  var h = String(Math.floor(elapsed / 3600)).padStart(2, '0');
-  var m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
-  var s = String(elapsed % 60).padStart(2, '0');
-  el.textContent = h + ':' + m + ':' + s;
-}
-
-/* ===========================
-   AUTH
-   =========================== */
-function handleLogin() {
-  var input = document.getElementById('operator-code');
-  var errorEl = document.getElementById('login-error');
-  var code = input.value.trim();
-
-  if (OPERATORS[code]) {
-    errorEl.classList.remove('visible');
-    state.currentOperator = OPERATORS[code];
-    state.currentCode = code;
-
-    document.getElementById('operator-name-display').textContent = state.currentOperator;
-    document.getElementById('operator-initials').textContent = getInitials(state.currentOperator);
-
-    showScreen('screen-main');
-    loadBatches();
-    input.value = '';
-  } else {
-    errorEl.classList.remove('visible');
-    void errorEl.offsetWidth;
-    errorEl.classList.add('visible');
-    input.value = '';
-    input.focus();
-  }
-}
-
-function handleLogout() {
-  stopTimer();
-  state.currentOperator = null;
-  state.currentCode = null;
-  state.runningBatch = null;
-  state.runStartTime = null;
-  state.batches = [];
-  state.sessionLogs = [];
-  showScreen('screen-login');
-  document.getElementById('operator-code').focus();
-}
-
-/* ===========================
    HELPERS
    =========================== */
-function showScreen(id) {
-  var screens = document.querySelectorAll('.screen');
-  for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
-  document.getElementById(id).classList.add('active');
-}
-
 function setStatus(type, msg) {
   var chip = document.getElementById('statusChip');
   chip.className = 'status-pill ' + type;
@@ -1466,36 +617,18 @@ function showToast(msg) {
   setTimeout(function() { toast.classList.remove('visible'); }, 2500);
 }
 
-function getInitials(name) {
-  return name.split(' ').map(function(p) { return p[0]; }).join('');
-}
-
-function formatDateTime(date) {
-  if (!date) return '';
-  var h = date.getHours(); var m = date.getMinutes(); var s = date.getSeconds();
-  var ampm = h >= 12 ? 'PM' : 'AM';
-  h = h % 12; if (h === 0) h = 12;
+function formatDateShort(d) {
   var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return months[date.getMonth()] + ' ' + date.getDate() + ', ' +
-    h + ':' + (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s + ' ' + ampm;
+  return months[d.getMonth()] + ' ' + d.getDate();
 }
 
-function formatTimeShort(date) {
-  if (!date) return '';
-  var h = date.getHours(); var m = date.getMinutes();
+function formatTime12h(d) {
+  var h = d.getHours();
+  var m = d.getMinutes();
   var ampm = h >= 12 ? 'PM' : 'AM';
-  h = h % 12; if (h === 0) h = 12;
+  h = h % 12;
+  if (h === 0) h = 12;
   return h + ':' + (m < 10 ? '0' : '') + m + ' ' + ampm;
-}
-
-function formatDuration(start, end) {
-  var elapsed = Math.floor((end - start) / 1000);
-  var h = Math.floor(elapsed / 3600);
-  var m = Math.floor((elapsed % 3600) / 60);
-  var s = elapsed % 60;
-  if (h > 0) return h + 'h ' + m + 'm ' + s + 's';
-  if (m > 0) return m + 'm ' + s + 's';
-  return s + 's';
 }
 
 function escapeHtml(str) {
@@ -1505,25 +638,10 @@ function escapeHtml(str) {
 }
 
 /* ===========================
-   EVENT LISTENERS
+   INIT — auto-refresh every 30s
    =========================== */
-document.getElementById('login-btn').addEventListener('click', handleLogin);
-document.getElementById('operator-code').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') handleLogin();
-});
-
-// Auto-login on 4-char input
-document.getElementById('operator-code').addEventListener('input', function() {
-  if (this.value.length === 4) handleLogin();
-});
-
-document.getElementById('logout-btn').addEventListener('click', handleLogout);
-
-document.getElementById('modal-tank').addEventListener('click', function(e) {
-  if (e.target === this) closeTankModal();
-});
-
-document.getElementById('operator-code').focus();
+loadBatches();
+setInterval(loadBatches, 30000);
 </script>
 </body>
 </html>
